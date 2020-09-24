@@ -20,10 +20,11 @@ public class BenchmarkTest {
         int nRuns = 2;
         int warmups = 2;
         Benchmark<Boolean> bm = new Benchmark_Timer<>(
-                "testWaitPeriods", b -> {
-            GoToSleep(100L, -1);
-            return null;
-        },
+                "testWaitPeriods", 
+                b -> {
+                	GoToSleep(100L, -1);
+                	return null;
+                },
                 b -> {
                     GoToSleep(200L, 0);
                 },

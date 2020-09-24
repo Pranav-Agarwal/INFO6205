@@ -3,6 +3,7 @@
  */
 package edu.neu.coe.info6205.sort.simple;
 
+
 import edu.neu.coe.info6205.sort.BaseHelper;
 import edu.neu.coe.info6205.sort.Helper;
 import edu.neu.coe.info6205.sort.SortWithHelper;
@@ -53,8 +54,14 @@ public class InsertionSort<X extends Comparable<X>> extends SortWithHelper<X> {
      */
     public void sort(X[] xs, int from, int to) {
         final Helper<X> helper = getHelper();
-
-        // TO BE IMPLEMENTED
+        
+        for(int i=from+1;i<to;i++) {
+        	int j=i;
+        	while(j>from && helper.less(xs[j],xs[j-1])) {
+        		helper.swap(xs,j-1,j);
+        		j--;
+        	}
+        }
     }
 
     /**
@@ -68,5 +75,13 @@ public class InsertionSort<X extends Comparable<X>> extends SortWithHelper<X> {
     }
 
     public static final String DESCRIPTION = "Insertion sort";
+    
+//    public static void main(String args[]) {
+//    	InsertionSort t = new InsertionSort();
+//    	Integer[] k = {3,2,1};
+//    	Double[] g = {3.3,3.2,3.1};
+//    	t.sort(g,0,3);
+//    	System.out.println(Arrays.toString(g));
+//    }
 
 }

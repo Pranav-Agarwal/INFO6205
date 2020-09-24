@@ -13,7 +13,9 @@ public class InsertionSortBasic {
     }
 
     private void swap(int i, Object[] a) {
-        // TO BE IMPLEMENTED
+        for(int j=i;j>0;j--) {
+        	if((int)a[j-1]>(int)a[j]) swap(a,j,j-1);
+        }
     }
 
     private void swap(Object[] a, int j, int i) {
@@ -24,8 +26,9 @@ public class InsertionSortBasic {
 
     public static void main(String[] args) {
         InsertionSortBasic sorter = new InsertionSortBasic();
-        System.out.println(Arrays.toString(args));
-        sorter.sort(args);
-        System.out.println(Arrays.toString(args));
+        Object[] inp = {3,2,1,3,1,6,1,1,5,8,1,6,67,9675,2,4};
+        System.out.println(Arrays.toString(inp));
+        sorter.sort(inp);
+        System.out.println(Arrays.toString(inp));
     }
 }

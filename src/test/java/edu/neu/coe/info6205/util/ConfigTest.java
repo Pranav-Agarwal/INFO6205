@@ -1,13 +1,16 @@
 package edu.neu.coe.info6205.util;
 
-import edu.neu.coe.info6205.sort.InstrumentedHelper;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.io.IOException;
+
 import org.ini4j.Ini;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.io.IOException;
-
-import static org.junit.Assert.*;
+import edu.neu.coe.info6205.sort.InstrumentedHelper;
 
 public class ConfigTest {
 
