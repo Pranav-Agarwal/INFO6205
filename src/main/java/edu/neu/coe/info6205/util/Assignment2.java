@@ -12,8 +12,8 @@ import edu.neu.coe.info6205.sort.simple.InsertionSort;
 
 public class Assignment2 {
 	
-	private static final int INITAL_SIZE = 100;  //Inital value of N to test for
-	private static final int DOUBLING_LIMIT = 7;  //Number of values of N to test for, doubling every time
+	private static final int INITAL_SIZE = 10;  //Inital value of N to test for
+	private static final int DOUBLING_LIMIT = 15;  //Number of values of N to test for, doubling every time
 	private static final int RUNS = 10;  //Number of runs for a given N and array input.
 	private static final int MAX = -10000; //max value of an integer in the array
 	private static final int MIN = 10000;  //min value of an integer in the array
@@ -41,14 +41,33 @@ public class Assignment2 {
 		
 		return res;
 	}
+	
+	private static int getInversions(Integer[] inp) {
+		int ans=0;
+		for(int i=0;i<inp.length-1;i++) {
+			for(int j=i+1;j<inp.length;j++) {
+				if(j<i) ans++;
+			}
+		}
+		return ans;
+	}
 
 	public static void main(String[] args) {
 		
-    	UnaryOperator<Integer[]> pre = inp -> inp;
-    	Consumer<Integer[]> func = inp -> new InsertionSort<Integer>().sort(inp,true);
-    	Consumer<Integer[]> post = inp -> System.out.print("");
+		//pre function creates a clone of the array so the original array is not modified during sort for future runs
+    	UnaryOperator<Integer[]> pre = inp -> {return inp.clone();};
+    	
+    	//function to be benchmarked; sorts array using insertion sort
+    	Consumer<Integer[]> func = inp -> new InsertionSort<Integer>().sort(inp,0,inp.length);
+    	
+    	//post function checks if inversions in result is > 0, and prints an error if so.
+    	Consumer<Integer[]> post = inp -> {
+    		if (getInversions(inp)>0) System.out.println("OUTPUT NOT SORTED");
+    	};
+    	
     	Benchmark_Timer<Integer[]> t = new Benchmark_Timer<Integer[]>("Insertion Sort Benchmark",pre,func,post);
     	
+    	//run the benchmark for various values of n and different array types. store results in a csv file.
     	try {
 			FileWriter writer = new FileWriter("results/insertion_sort_benchmark/data.csv");
 			writer.write("n,random,sorted,reverse_sorted,partially_sorted\n");
