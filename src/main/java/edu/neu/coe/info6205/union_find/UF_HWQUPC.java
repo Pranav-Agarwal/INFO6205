@@ -82,9 +82,9 @@ public class UF_HWQUPC implements UF {
         validate(p);
         int root = p;
         while(parent[root]!=root) {
+        	if(pathCompression) parent[root] = parent[parent[root]];   //makes each node's parent it's grandfather
         	root = parent[root];
         }
-        if( pathCompression) parent[p] = root;
         return root;
     }
 
@@ -130,6 +130,23 @@ public class UF_HWQUPC implements UF {
     public void setPathCompression(boolean pathCompression) {
         this.pathCompression = pathCompression;
     }
+    
+    /**
+     * Used to find the average distance of all nodes from root after union find is completed.
+     *
+     * @return the average distance from root;
+     */
+    public double averageDepth() {
+    	double ans = 0.0;
+    	for(int i =0;i<parent.length;i++) {
+    		int temp = i;
+    		while(parent[temp]!=temp) {
+    			ans+=1;
+    			temp = parent[temp];
+    		}
+    	}
+    	return ans/parent.length;
+    }
 
     @Override
     public String toString() {
@@ -172,21 +189,23 @@ public class UF_HWQUPC implements UF {
 
     private void mergeComponents(int i, int j) {
         //System.out.println("before merge - "+ this.toString());
-        if(height[i]>=height[j]) {
+        if(height[i]>height[j]) {
         	parent[j]=i;
-        	height[i]+=height[j];
+        }
+        else if(height[i]<height[j]){
+        	parent[i]=j;
         }
         else {
-        	parent[i]=j;
-        	height[j]+=height[i];
+        	parent[j]=i;
+        	height[i]++;
         }
+        
         //System.out.println("after merge - "+ this.toString());
     }
 
     /**
-     * This implements the single-pass path-halving mechanism of path compression
+     * This is unused because path compressssion is happenning in the find method itself.
      */
-    private void doPathCompression(int i) {
-        parent[i] = find(i);
+    private void doPathCompression(int i,int root) {
     }
 }

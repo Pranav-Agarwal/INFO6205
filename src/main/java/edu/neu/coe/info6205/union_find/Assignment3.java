@@ -14,6 +14,13 @@ public class Assignment3 {
 		
 	}
 	
+	
+    /**
+     * Returns a random pair of integers.
+     *
+     * @param n the upper limit to generate
+     * @return returns an int[2] with random ints.
+     */
 	private static int[] randomPair(int n) {
 		int[] ans = new int[2];
 		ans[0] = (int)(Math.random()*n);
@@ -22,16 +29,23 @@ public class Assignment3 {
 		return ans;
 	}
 	
+	
+    /**
+     * Returns the number of random pairs needed to connect all nodes.
+     *
+     * @param n the number of nodes
+     * @param runs the number of runs per n that is averaged
+     * @return count the number of random pairs needed to connect all nodes.
+     */
 	private static int count(int n, int runs) {
 		int size = n;
 		double av = 0;
-		for(int i=0;i<runs;i++) {
+		for(int i=0;i<1;i++) {
 			UF h = new UF_HWQUPC(size, true);
 			int pairs=0;
 			while(h.components()>1) {
 				int[] temp = randomPair(size);
 				h.connect(temp[0], temp[1]);
-				//System.out.println(temp[0]+" "+temp[1]+" "+pairs+" "+h.components());
 				pairs++;
 			}
 			av+= pairs;
