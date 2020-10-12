@@ -40,7 +40,7 @@ public class Assignment3 {
 	private static int count(int n, int runs) {
 		int size = n;
 		double av = 0;
-		for(int i=0;i<1;i++) {
+		for(int i=0;i<runs;i++) {
 			UF h = new UF_HWQUPC(size, true);
 			int pairs=0;
 			while(h.components()>1) {
