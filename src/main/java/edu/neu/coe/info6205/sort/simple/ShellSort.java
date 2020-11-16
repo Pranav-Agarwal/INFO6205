@@ -3,10 +3,14 @@
  */
 package edu.neu.coe.info6205.sort.simple;
 
+import static org.junit.Assert.assertEquals;
+
 import edu.neu.coe.info6205.sort.BaseHelper;
 import edu.neu.coe.info6205.sort.Helper;
+import edu.neu.coe.info6205.sort.InstrumentedHelper;
 import edu.neu.coe.info6205.sort.SortWithHelper;
 import edu.neu.coe.info6205.util.Config;
+import edu.neu.coe.info6205.util.StatPack;
 
 /**
  * Class to implement Shell Sort.
@@ -14,7 +18,8 @@ import edu.neu.coe.info6205.util.Config;
  * @param <X> the type of element on which we will be sorting (must implement Comparable).
  */
 public class ShellSort<X extends Comparable<X>> extends SortWithHelper<X> {
-
+	public int N;
+	public int swaps=0;
     /**
      * Constructor for ShellSort
      *
@@ -24,6 +29,7 @@ public class ShellSort<X extends Comparable<X>> extends SortWithHelper<X> {
     public ShellSort(int m, int N, Config config) {
         super(DESCRIPTION, N, config);
         this.m = m;
+        this.N = N;
     }
 
     public ShellSort() {
@@ -57,6 +63,11 @@ public class ShellSort<X extends Comparable<X>> extends SortWithHelper<X> {
     public ShellSort(int m) {
         this(m, new BaseHelper<>(DESCRIPTION));
     }
+    
+    public ShellSort(int m,int N) {
+        this(m, new BaseHelper<>(DESCRIPTION));
+        this.N = N;
+    }
 
     /**
      * Method to sort a sub-array of an array of Xs.
@@ -67,11 +78,10 @@ public class ShellSort<X extends Comparable<X>> extends SortWithHelper<X> {
      */
     public void sort(X[] xs, int from, int to) {
         int N = to - from;
-        H hh = new H(N);
-        int h = hh.first();
+        int h = first();
         while (h > 0) {
             hSort(h, xs, from, to);
-            h = hh.next();
+            h = next();
         }
     }
 
@@ -85,11 +95,15 @@ public class ShellSort<X extends Comparable<X>> extends SortWithHelper<X> {
      * @param from the first index to be considered in array xs.
      * @param to   one plus the last index to be considered in array xs.
      */
-    private void hSort(int h, X[] xs, int from, int to) {
+    public void hSort(int h, X[] xs, int from, int to) {
+    	swaps=0;
         final Helper<X> helper = getHelper();
         for (int i = h + from; i < to; i++) {
             int j = i;
-            while (j >= h + from && helper.swapConditional(xs, j - h, j)) j -= h;
+            while (j >= h + from && helper.swapConditional(xs, j - h, j)) {
+            	j -= h;
+            	swaps++;
+            }
         }
     }
 
@@ -98,62 +112,63 @@ public class ShellSort<X extends Comparable<X>> extends SortWithHelper<X> {
     /**
      * Private inner class to provide h (gap) values.
      */
-    private class H {
-        @SuppressWarnings("CanBeFinal")
-        private int h = 1;
-        private boolean started = false;
+    public int h = 1;
+    private boolean started = false;
 
-        H(int N) {
+    public void initial_h() {
+    	
+        switch (m) {
+            case 1:
+                break;
+            case 2:
+                h = (int)(Math.log(N+1)/Math.log(2));
+                h = (int)(Math.pow(2,h)-1);
+                break;
+            case 3:
+            	h = (int)(Math.log(N*2+1)/Math.log(3));
+            	h = (int)(Math.pow(3,h)-1)/2;
+                break;
+            default:
+                throw new RuntimeException("invalid m value: " + m);
+        }
+    }
+
+    /**
+     * Method to yield the first h value.
+     * NOTE: this may only be called once.
+     *
+     * @return the first (largest) value of h, given the size of the problem (N)
+     */
+    public int first() {
+        if (started) throw new RuntimeException("cannot call first more than once");
+        started = true;
+        initial_h();
+        return h;
+    }
+
+    /**
+     * Method to yield the next h value in the "gap" series.
+     * NOTE: first must be called before next.
+     *
+     * @return the next value of h in the gap series.
+     */
+    public int next() {
+        if (started) {
             switch (m) {
                 case 1:
-                    break;
+                    return 0;
                 case 2:
-                    // TO BE IMPLEMENTED
-                    break;
+                    h = ((h+1)/2)-1;
+                    return h;
                 case 3:
-                    // TO BE IMPLEMENTED
-                    break;
+                    h = ((((h*2)+1)/3)-1)/2;
+                    return h;
                 default:
                     throw new RuntimeException("invalid m value: " + m);
             }
-        }
-
-        /**
-         * Method to yield the first h value.
-         * NOTE: this may only be called once.
-         *
-         * @return the first (largest) value of h, given the size of the problem (N)
-         */
-        int first() {
-            if (started) throw new RuntimeException("cannot call first more than once");
+        } else {
             started = true;
             return h;
-        }
-
-        /**
-         * Method to yield the next h value in the "gap" series.
-         * NOTE: first must be called before next.
-         *
-         * @return the next value of h in the gap series.
-         */
-        int next() {
-            if (started) {
-                switch (m) {
-                    case 1:
-                        // TO BE IMPLEMENTED
-                    case 2:
-                        // TO BE IMPLEMENTED
-                        return h;
-                    case 3:
-                        // TO BE IMPLEMENTED
-                        return h;
-                    default:
-                        throw new RuntimeException("invalid m value: " + m);
-                }
-            } else {
-                started = true;
-                return h;
-            }
         }
     }
 }

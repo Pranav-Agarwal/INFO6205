@@ -291,7 +291,7 @@ public class InstrumentedHelper<X extends Comparable<X>> extends BaseHelper<X> {
     @Override
     public void postProcess(X[] xs) {
         super.postProcess(xs);
-        if (!sorted(xs)) throw new BaseHelper.HelperException("Array is not sorted");
+        //if (!sorted(xs)) throw new BaseHelper.HelperException("Array is not sorted");
         if (statPack == null) throw new RuntimeException("InstrumentedHelper.postProcess: no StatPack");
         if (countCompares)
             statPack.add(COMPARES, compares);

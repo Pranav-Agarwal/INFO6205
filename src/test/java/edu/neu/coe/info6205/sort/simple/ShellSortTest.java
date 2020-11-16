@@ -6,13 +6,23 @@ package edu.neu.coe.info6205.sort.simple;
 
 import edu.neu.coe.info6205.sort.BaseHelper;
 import edu.neu.coe.info6205.sort.GenericSort;
+import edu.neu.coe.info6205.sort.Helper;
+import edu.neu.coe.info6205.sort.HelperFactory;
+import edu.neu.coe.info6205.sort.InstrumentedHelper;
+import edu.neu.coe.info6205.util.Config;
+import edu.neu.coe.info6205.util.ConfigTest;
 import edu.neu.coe.info6205.util.LazyLogger;
 import edu.neu.coe.info6205.util.PrivateMethodTester;
+import edu.neu.coe.info6205.util.StatPack;
+
 import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
+import java.util.Arrays;
 
 @SuppressWarnings("ALL")
 public class ShellSortTest {
@@ -88,6 +98,4 @@ public class ShellSortTest {
     }
 
     final static LazyLogger logger = new LazyLogger(ShellSort.class);
-
-
 }
